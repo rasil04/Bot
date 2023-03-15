@@ -1,40 +1,28 @@
-import random
-
-from aiogram import Bot, Dispatcher, executor, types
+from aiogram import executor
 import logging
-from dotenv import load_dotenv
-import os
-
-
-load_dotenv()
-bot = Bot(token=os.getenv('BOT_TOKEN'))
-dp = Dispatcher(bot)
-
-
-@dp.message_handler(commands=["start"])
-async def hello(message: types.Message):
-    await message.answer(f"Привет {message.from_user.first_name}!")
-
-@dp.message_handler(commands=["help"])
-async def help(message: types.Message):
-    await message.answer('''
-/start - Начало работы с ботом
-/help - Список команд
-/myinfo - Информация вашего профиля
-/picture - Отправить рандомную пикчу
-    ''')
-
-@dp.message_handler(commands=["myinfo"])
-async def info_sender(message: types.Message):
-    await message.answer(f'''
-Ваше имя: {message.from_user.first_name}
-Ваш ID: {message.from_id}
-    ''')
-
-@dp.message_handler(commands=["picture"])
-async def image_sender(message: types.Message):
-    await message.answer_photo(open(f'./images/' + random.choice(os.listdir('images')), 'rb'))
+from aiogram.dispatcher.filters import Text
+from config import dp
+from handlers.basic_handlers import (
+    start,
+    help,
+    my_info,
+    random_picture
+)
+from handlers.shop import (
+    show_categories,
+    show_category_accessories,
+    show_category_mouses,
+    show_adress
+)
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
+    dp.register_message_handler(show_categories, commands=["start"])
+    dp.register_message_handler(show_category_accessories, Text(equals="Аксессуары"))
+    dp.register_message_handler(show_category_mouses, Text(equals="Мышки"))
+    dp.register_message_handler(show_adress, Text(equals="Адрес"))
+    # dp.register_message_handler(start, commands=["start"])
+    dp.register_message_handler(help, commands=["help"])
+    dp.register_message_handler(my_info, commands=["myinfo"])
+    dp.register_message_handler(random_picture, commands=["picture"])
     executor.start_polling(dp)
