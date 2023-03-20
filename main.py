@@ -14,6 +14,10 @@ from handlers.shop import (
     show_category_mouses,
     show_adress
 )
+from admin.admin import (
+    check_words,
+    yes_no
+)
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
@@ -25,4 +29,6 @@ if __name__ == "__main__":
     dp.register_message_handler(help, commands=["help"])
     dp.register_message_handler(my_info, commands=["myinfo"])
     dp.register_message_handler(random_picture, commands=["picture"])
+    dp.register_message_handler(check_words)
+    dp.register_message_handler(yes_no, commands=['Да'], commands_prefix=['!'])
     executor.start_polling(dp)
