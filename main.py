@@ -18,6 +18,15 @@ from admin.admin import (
     check_words,
     yes_no
 )
+from handlers.user_info_fsm import (
+    start_form,
+    process_name,
+    process_age,
+    process_address,
+    UserForm,
+    process_delivery_day
+)
+
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
@@ -31,4 +40,9 @@ if __name__ == "__main__":
     dp.register_message_handler(random_picture, commands=["picture"])
     dp.register_message_handler(check_words)
     dp.register_message_handler(yes_no, commands=['Да'], commands_prefix=['!'])
+    dp.register_message_handler(start_form, commands=["form"])
+    dp.register_message_handler(process_name, state=UserForm.name)
+    dp.register_message_handler(process_age, state=UserForm.age)
+    dp.register_message_handler(process_address, state=UserForm.address)
+    dp.register_message_handler(process_delivery_day, state=UserForm.delivery_day)
     executor.start_polling(dp)

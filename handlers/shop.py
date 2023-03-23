@@ -9,12 +9,16 @@ kb.add(
 )
 
 async def show_categories(message: types.Message):
-    """Функция показывает категории товаров"""
+    """
+    Функция показывает категории товаров
+    """
     await message.reply("Наши товары", reply_markup=kb)
 
 
 async def show_category_accessories(message: types.Message):
-    """Функция показывает категорию 'Аксессуары'"""
+    """
+    Функция показывает категорию 'Аксессуары'
+    """
     kb_accessories = types.InlineKeyboardMarkup()
     kb_accessories.add(
         types.InlineKeyboardButton(text="Наушники", url="https://row.hyperx.com/ru/collections/gaming-headsets/products/hyperx-cloud-stinger?variant=40853229437133"),
@@ -24,10 +28,14 @@ async def show_category_accessories(message: types.Message):
 
 
 async def show_category_mouses(message: types.Message):
-    """Функция показывает категорию 'Мышки'"""
+    """
+    Функция показывает категорию 'Мышки'
+    """
     await message.answer("Мышки:", reply_markup=kb)
 
 
 async def show_adress(message: types.Message):
-    """Функция показывающая адрес"""
+    """
+    Функция показывающая адрес
+    """
     await message.answer("Чуй 42")
