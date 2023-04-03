@@ -1,7 +1,10 @@
 from aiogram import executor
 import logging
 from aiogram.dispatcher.filters import Text
-from config import dp
+from config import (
+    dp,
+    scheduler
+)
 from handlers.basic_handlers import (
     start,
     help,
@@ -26,10 +29,14 @@ from handlers.user_info_fsm import (
     UserForm,
     process_delivery_day
 )
+from handlers.scheduler import handler_scheduler
 
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
+    #Напоминалка
+    dp.register_message_handler(handler_scheduler, Text(startswith="Напомни"))
+
     dp.register_message_handler(show_categories, commands=["start"])
     dp.register_message_handler(show_category_accessories, Text(equals="Аксессуары"))
     dp.register_message_handler(show_category_mouses, Text(equals="Мышки"))
@@ -45,4 +52,5 @@ if __name__ == "__main__":
     dp.register_message_handler(process_age, state=UserForm.age)
     dp.register_message_handler(process_address, state=UserForm.address)
     dp.register_message_handler(process_delivery_day, state=UserForm.delivery_day)
+    scheduler.start()
     executor.start_polling(dp)
