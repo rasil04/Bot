@@ -6,16 +6,15 @@ async def handler_scheduler(message: Message):
     """
         Функция напоминалка
     """
-    global reminder
-    global chat_id
-    reminder = message.text[8:]
+    text = message.text[8:]
     chat_id = message.from_user.id
-    scheduler.add_job(job_handler, 'interval', seconds=10, args=(chat_id,))
-    await message.answer("Понял, принял и напомнил!")
+    scheduler.add_job(job_handler, 'cron', seconds=10, args=(text, chat_id))
+    await message.answer(text="Понял, принял и напомнил!")
 
 
-async def job_handler(chat_id):
+async def job_handler(text, chat_id):
+    print('ok')
     await bot.send_message(
         chat_id=chat_id,
-        text=reminder
+        text=text
     )
